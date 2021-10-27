@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="AnimalMoveTest" tests="11" skipped="0" failures="0" errors="0" timestamp="2021-10-27T22:16:32" hostname="VeraQ" time="0.057">
+  <properties/>
+  <testcase name="parseTest1()" classname="AnimalMoveTest" time="0.026"/>
+  <testcase name="directionTest1()" classname="AnimalMoveTest" time="0.005"/>
+  <testcase name="directionTest2()" classname="AnimalMoveTest" time="0.001"/>
+  <testcase name="directionTest3()" classname="AnimalMoveTest" time="0.002"/>
+  <testcase name="positionTest1()" classname="AnimalMoveTest" time="0.002"/>
+  <testcase name="positionTest2()" classname="AnimalMoveTest" time="0.001"/>
+  <testcase name="positionTest3()" classname="AnimalMoveTest" time="0.001"/>
+  <testcase name="boundaryTest1()" classname="AnimalMoveTest" time="0.001"/>
+  <testcase name="boundaryTest2()" classname="AnimalMoveTest" time="0.001"/>
+  <testcase name="boundaryTest3()" classname="AnimalMoveTest" time="0.001"/>
+  <testcase name="boundaryTest4()" classname="AnimalMoveTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
