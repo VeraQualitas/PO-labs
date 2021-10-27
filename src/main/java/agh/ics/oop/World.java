@@ -4,13 +4,17 @@ import static java.lang.System.out;
 
 public class World {
     public static void main(String[] args) {
-//        out.println("system wystartował");
-////        String[] arguments = {"x", "y"};
-//        World.run(args);
-//        out.println("system zakończył działanie");
         out.println("Start");
+
+        Vector2d position1 = new Vector2d(1,2);
+        System.out.println(position1);
+        Vector2d position2 = new Vector2d(-2,1);
+        System.out.println(position2);
+        System.out.println(position1.add(position2));
+
         Direction[] directions = getDirections(args);
         World.run(directions);
+
         out.println("Stop");
     }
 
@@ -39,21 +43,13 @@ public class World {
     }
 
     public static void run(Direction[] arguments) {
-//        out.println("Zwierzak idzie do przodu");
-//        for (String argument:arguments) {
-//            if(argument.equals(arguments[0])){out.print(argument);}
-//            else {out.print(", " + argument);}
-//        }
-//        out.println();
-//    }
         for (Direction argument:arguments) {
             switch (argument) {
                 case FORWARD -> out.println("Zwierzak idzie do przodu");
                 case RIGHT -> out.println("Zwierzak skręca w prawo");
                 case BACKWARD -> out.println("Zwierzak idzie do tyłu");
                 case LEFT -> out.println("Zwierzak skręca w lewo");
-                default -> {
-                }
+                default -> {}
             }
         }
     }
