@@ -1,3 +1,5 @@
+package agh.ics.oop;
+
 import agh.ics.oop.*;
 import org.junit.jupiter.api.Test;
 

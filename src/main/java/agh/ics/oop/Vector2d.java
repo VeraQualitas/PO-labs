@@ -42,6 +42,7 @@ public class Vector2d {
         return new Vector2d(-this.x, -this.y);
     }
 
+    @Override
     public boolean equals(Object other) {
         if (this == other)
             return true;
@@ -49,6 +50,15 @@ public class Vector2d {
             return false;
         Vector2d that = (Vector2d) other;
         return this.x == that.x && this.y == that.y;
+    }
+    @Override
+    public int hashCode() {
+        final int prime1 = 31;
+        final int prime2 = 37;
+        int result = 1;
+        result = prime1 * this.x + prime2 * this.y;
+        result = (prime1 + prime2) * result;
+        return result;
     }
 
 
