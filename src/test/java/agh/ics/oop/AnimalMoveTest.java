@@ -5,12 +5,14 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class AnimalMoveTest {
+    private final IWorldMap map = new RectangularMap(4, 4);
     @Test
     public void directionTest1() {
-        Animal animal = new Animal();
+        Animal animal = new Animal(this.map);
         MoveDirection[] directions = {
                 MoveDirection.LEFT,
                 MoveDirection.LEFT,
@@ -27,7 +29,7 @@ public class AnimalMoveTest {
 
     @Test
     public void directionTest2() {
-        Animal animal = new Animal();
+        Animal animal = new Animal(this.map);
         MoveDirection[] directions = {
                 MoveDirection.LEFT,
                 MoveDirection.FORWARD,
@@ -44,7 +46,7 @@ public class AnimalMoveTest {
 
     @Test
     public void directionTest3() {
-        Animal animal = new Animal();
+        Animal animal = new Animal(this.map);
         MoveDirection[] directions = {
                 MoveDirection.LEFT,
                 MoveDirection.RIGHT,
@@ -63,7 +65,7 @@ public class AnimalMoveTest {
 
     @Test
     public void positionTest1() {
-        Animal animal = new Animal();
+        Animal animal = new Animal(this.map);
 
         MoveDirection[] directions = {
                 MoveDirection.FORWARD,
@@ -78,7 +80,7 @@ public class AnimalMoveTest {
 
     @Test
     public void positionTest2() {
-        Animal animal = new Animal();
+        Animal animal = new Animal(this.map);
 
         MoveDirection[] directions = {
                 MoveDirection.FORWARD, // (2, 3)
@@ -97,7 +99,7 @@ public class AnimalMoveTest {
 
     @Test
     public void positionTest3() {
-        Animal animal = new Animal();
+        Animal animal = new Animal(this.map);
 
         MoveDirection[] directions = {
                 MoveDirection.FORWARD, // (2, 3)
@@ -122,7 +124,7 @@ public class AnimalMoveTest {
 
     @Test
     public void boundaryTest1() {
-        Animal animal = new Animal();
+        Animal animal = new Animal(this.map);
 
         MoveDirection[] directions = {
                 MoveDirection.FORWARD, // (2, 3)
@@ -144,7 +146,7 @@ public class AnimalMoveTest {
 
     @Test
     public void boundaryTest2() {
-        Animal animal = new Animal();
+        Animal animal = new Animal(this.map);
 
         MoveDirection[] directions = {
                 MoveDirection.FORWARD, // (2, 3)
@@ -165,7 +167,7 @@ public class AnimalMoveTest {
 
     @Test
     public void boundaryTest3() {
-        Animal animal = new Animal();
+        Animal animal = new Animal(this.map);
 
         MoveDirection[] directions = {
                 MoveDirection.FORWARD, // (2, 3)
@@ -173,10 +175,10 @@ public class AnimalMoveTest {
                 MoveDirection.RIGHT,   // (2, 3)
                 MoveDirection.RIGHT,   // (2, 3)
                 MoveDirection.RIGHT,   // (2, 3)
-                MoveDirection.FORWARD,// (2, 4)
-                MoveDirection.FORWARD,// (2, 4)
+                MoveDirection.FORWARD,// (2, 3)
+                MoveDirection.FORWARD,// (2, 3)
         };
-        Vector2d expected = new Vector2d(2,4);
+        Vector2d expected = new Vector2d(2,3);
 
         for (MoveDirection direction: directions) animal.move(direction);
         assertTrue(animal.isAt(expected));
@@ -184,7 +186,7 @@ public class AnimalMoveTest {
 
     @Test
     public void boundaryTest4() {
-        Animal animal = new Animal();
+        Animal animal = new Animal(this.map);
 
         MoveDirection[] directions = {
                 MoveDirection.FORWARD, // (2, 3)
@@ -194,10 +196,10 @@ public class AnimalMoveTest {
                 MoveDirection.RIGHT,   // (2, 3)
                 MoveDirection.RIGHT,   // (2, 3)
                 MoveDirection.FORWARD,// (3, 3)
-                MoveDirection.FORWARD,// (4, 3)
-                MoveDirection.FORWARD,// (4, 3)
+                MoveDirection.FORWARD,// (3, 3)
+                MoveDirection.FORWARD,// (3, 3)
         };
-        Vector2d expected = new Vector2d(4,3);
+        Vector2d expected = new Vector2d(3,3);
 
         for (MoveDirection direction: directions) animal.move(direction);
         assertTrue(animal.isAt(expected));
@@ -217,6 +219,6 @@ public class AnimalMoveTest {
                 MoveDirection.LEFT,
         };
 
-        assertTrue(Arrays.equals(OptionsParser.parse(arguments), directions));
+        assertArrayEquals(OptionsParser.parse(arguments), directions);
     }
 }

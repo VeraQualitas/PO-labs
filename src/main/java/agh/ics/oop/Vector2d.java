@@ -57,7 +57,7 @@ public class Vector2d {
         final int prime2 = 37;
         int result = 1;
         result = prime1 * this.x + prime2 * this.y;
-        result = (prime1 + prime2) * result;
+//        result = (prime1 + prime2) * result;
         return result;
     }
 

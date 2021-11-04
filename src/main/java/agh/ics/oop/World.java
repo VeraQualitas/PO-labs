@@ -16,9 +16,18 @@ public class World {
 //        Direction[] directions = getDirections(args);
 //        World.run(directions);
 
-        Animal animal = new Animal();
-        for(MoveDirection direction: OptionsParser.parse(args)) animal.move(direction);
-        System.out.println(animal);
+//        Animal animal = new Animal();
+//        for(MoveDirection direction: OptionsParser.parse(args)) animal.move(direction);
+//        System.out.println(animal);
+
+        MoveDirection[] directions = OptionsParser.parse(args);
+        IWorldMap map = new RectangularMap(10, 5);
+        Vector2d[] positions = { new Vector2d(2,2), new Vector2d(3,4) };
+
+        IEngine engine = new SimulationEngine(directions, map, positions);
+        System.out.println(map);
+        engine.run();
+        System.out.println(map);
 
         out.println("Stop");
     }
