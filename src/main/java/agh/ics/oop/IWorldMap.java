@@ -46,5 +46,5 @@ public interface IWorldMap {
      */
     Object objectAt(Vector2d position);
 
-    boolean move(Vector2d oldPosition, Vector2d newPosition);
+    boolean move(Vector2d oldPosition, Vector2d newPosition);   // tej metody tu nie może być!
 }

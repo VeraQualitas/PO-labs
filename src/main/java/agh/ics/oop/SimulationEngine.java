@@ -3,7 +3,7 @@ package agh.ics.oop;
 public class SimulationEngine implements IEngine {
     private final IWorldMap map;
     private final MoveDirection[] moves;
-    private final Animal[] animals;
+    private final Animal[] animals; // czy lista nie byłaby lepsza?
 
 
     public SimulationEngine(MoveDirection[] moves, IWorldMap map, Vector2d[] firstPlaces) {
@@ -16,7 +16,7 @@ public class SimulationEngine implements IEngine {
         }
 
         for (Animal animal:animals) {
-            this.map.place(animal);
+            this.map.place(animal); // a co jeśli place zwróci false?
         }
     }
 
