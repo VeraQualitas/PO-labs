@@ -4,7 +4,7 @@ import java.util.Objects;
 
 import static java.lang.System.out;
 
-public class Animal {
+public class Animal implements IMapElement{
     private MapDirection direction = MapDirection.NORTH;
     private Vector2d position;
     private final IWorldMap map;
@@ -20,6 +20,7 @@ public class Animal {
         this.position = initialPosition;
     }
 
+    @Override
     public String toString() {
         return switch (this.direction) {
             case NORTH -> "^";
@@ -58,6 +59,8 @@ public class Animal {
             }
         }
     }
+
+    @Override
     public Vector2d getPosition() {
         return position;
     }
