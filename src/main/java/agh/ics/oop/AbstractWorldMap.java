@@ -11,7 +11,7 @@ public abstract class AbstractWorldMap {
 
     public String toString() {
         Vector2d[] boundaries = this.getDrawBoundaries();
-        return new MapVisualizer((IWorldMap) this).draw(boundaries[0], boundaries[1]);
+        return new MapVisualizer((IWorldMap) this).draw(boundaries[0], boundaries[1]);  // AbstractWorldMap powinno implementować IWorldMap i wtedy nie trzeba rzutować + nowy obiekt co wywołanie
     }
 
 
@@ -39,6 +39,6 @@ public abstract class AbstractWorldMap {
 
     abstract protected Vector2d[] getDrawBoundaries();
 
-    abstract public boolean canMoveTo(Vector2d position);
+    abstract public boolean canMoveTo(Vector2d position);   // nie da się tego tu zaimplementować?
 
 }

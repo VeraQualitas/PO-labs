@@ -14,7 +14,7 @@ public class GrassField extends AbstractWorldMap implements IWorldMap {
 
     @Override
     protected Vector2d[] getDrawBoundaries() {
-        Vector2d[] boundaries = {mapElements.get(0).getPosition(), mapElements.get(0).getPosition()};
+        Vector2d[] boundaries = {mapElements.get(0).getPosition(), mapElements.get(0).getPosition()};   // co w przypadku pustej listy?
         for (IMapElement element : mapElements) {
             boundaries[0] = boundaries[0].lowerLeft(element.getPosition());
             boundaries[1] = boundaries[1].upperRight(element.getPosition());

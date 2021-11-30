@@ -10,7 +10,7 @@ public class RectangularMap extends AbstractWorldMap implements IWorldMap {
         upperRightBound = new Vector2d(width-1, height-1);
     }
 
-    public String toString() {
+    public String toString() {  // tej metody tu nie powinno być - po to ją Pan pisał w AbstractWorldMap
         return new MapVisualizer(this).draw(lowerLeftBound, upperRightBound);
     }
 
@@ -27,7 +27,7 @@ public class RectangularMap extends AbstractWorldMap implements IWorldMap {
 
     @Override
     public boolean place(Animal animal) {
-        return super.place(animal);
+        return super.place(animal); // po co nadpisywać metodę, jeśli tylko wywołuje Pan wersję odziedziczoną?
     }
 
 }
