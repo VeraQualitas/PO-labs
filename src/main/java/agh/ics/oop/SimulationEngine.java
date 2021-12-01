@@ -9,22 +9,22 @@ public class SimulationEngine implements IEngine {
 
 
     public SimulationEngine(MoveDirection[] moves, IWorldMap map, Vector2d[] firstPlaces) {
-        this.map = map;
         this.moves = moves;
+        this.map = map;
         this.animals = new ArrayList<>();
 
         for (Vector2d firstPlace: firstPlaces){
             Animal animal = new Animal(map, firstPlace);
             if (map.place(animal)) {
-                animals.add(animal);
+                this.animals.add(animal);
             }
         }
     }
 
     public void run(){
         for (int i=0; i < this.moves.length; i++) {
-            this.animals.get(i % animals.size()).move(moves[i]);
-            System.out.println(map);
+            this.animals.get(i % this.animals.size()).move(this.moves[i]);
+            System.out.println(this.map);
         }
     }
 
