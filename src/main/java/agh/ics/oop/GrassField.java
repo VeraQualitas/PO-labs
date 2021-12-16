@@ -1,7 +1,5 @@
 package agh.ics.oop;
 
-import java.util.HashMap;
-
 public class GrassField extends AbstractWorldMap {
     protected final MapBoundary mapBoundary;
     private final int randomMax;
@@ -18,7 +16,7 @@ public class GrassField extends AbstractWorldMap {
         }
     }
     @Override
-    protected Vector2d[] getDrawBoundaries() {
+    public Vector2d[] getDrawBoundaries() {
         return mapBoundary.getBoundaries();
     }
     public boolean placeGrass(Vector2d position) {
@@ -45,9 +43,9 @@ public class GrassField extends AbstractWorldMap {
         } else if (objectAt(position) instanceof Animal) {
             throw new IllegalArgumentException("Cannot place animal at " + position);
         }
-        mapBoundary.place(animal);
+        this.mapBoundary.place(animal);
         animal.addObserver(mapBoundary);
-        animalMap.put(position, animal);
+        this.animalMap.put(position, animal);
         animal.addObserver(this);
         return true;
     }

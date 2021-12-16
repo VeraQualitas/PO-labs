@@ -2,14 +2,16 @@ package agh.ics.oop;
 
 import java.util.ArrayList;
 
-public class SimulationEngine implements IEngine {
+public class SimulationEngine implements IEngine, Runnable {
     private final IWorldMap map;
-    private final MoveDirection[] moves;
+    private MoveDirection[] moves;
     private final ArrayList<Animal> animals;
+    private final ArrayList<IGenericObserver> observers = new ArrayList<>();
+    public int counter;
 
 
-    public SimulationEngine(MoveDirection[] moves, IWorldMap map, Vector2d[] firstPlaces) {
-        this.moves = moves;
+    public SimulationEngine(IWorldMap map, Vector2d[] firstPlaces) {
+        this.counter = 0;
         this.map = map;
         this.animals = new ArrayList<>();
 
@@ -20,11 +22,37 @@ public class SimulationEngine implements IEngine {
             }
         }
     }
+    public SimulationEngine(MoveDirection[] moves, IWorldMap map, Vector2d[] firstPlaces){
+        this(map, firstPlaces);
+        this.moves = moves;
+    }
+
+    public void setMoves(MoveDirection[] moves) {
+        this.moves = moves;
+    }
+
+    public void addObserver(IGenericObserver observer) {
+        this.observers.add(observer);
+    }
+
+    private void updateObservers() {
+        for (IGenericObserver observer: this.observers) {
+            observer.update();
+        }
+    }
 
     public void run(){
-        for (int i=0; i < this.moves.length; i++) {
-            this.animals.get(i % this.animals.size()).move(this.moves[i]);
-            System.out.println(this.map);
+        try {
+            for (int i=0; i<this.moves.length; i++) {
+                System.out.println(this.animals.get(1));
+                this.animals.get(this.counter % this.animals.size()).move(this.moves[i]);
+                updateObservers();
+                this.counter++;
+                Thread.sleep(300);
+            }
+
+        }  catch (InterruptedException e) {
+            System.out.println("Interrupted: " + e.getMessage());
         }
     }
 

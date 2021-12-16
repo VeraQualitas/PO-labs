@@ -38,7 +38,9 @@ public abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObse
 
     abstract protected Vector2d[] getDrawBoundaries();
 
-    abstract public boolean canMoveTo(Vector2d position);
+    public boolean canMoveTo(Vector2d position) {
+        return !(objectAt(position) instanceof Animal);
+    }
 
     public void positionChanged(Vector2d oldPosition, Vector2d newPosition) {
         this.animalMap.put(newPosition, (Animal) objectAt(oldPosition));
