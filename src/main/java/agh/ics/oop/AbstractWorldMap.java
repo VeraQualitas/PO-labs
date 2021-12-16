@@ -3,7 +3,7 @@ import java.util.HashMap;
 
 
 public abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObserver {
-    protected final HashMap<Vector2d, Animal> animalMap;
+    protected final HashMap<Vector2d, IMapElement> animalMap;
     private final MapVisualizer mapVisualizer;
 
     public AbstractWorldMap() {
@@ -17,14 +17,14 @@ public abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObse
     }
 
 
-    public boolean place(Animal animal) {
+    public boolean place(Animal animal) throws IllegalArgumentException {
         Vector2d position = animal.getPosition();
         if (canMoveTo(position)) {
             this.animalMap.put(position, animal);
             animal.addObserver(this);
             return true;
         }
-        else return false;
+        else throw new IllegalArgumentException("Cannot place animal at " + position);
     }
 
     public boolean isOccupied(Vector2d position) {

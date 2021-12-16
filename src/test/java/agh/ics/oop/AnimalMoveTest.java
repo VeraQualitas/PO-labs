@@ -5,8 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class AnimalMoveTest {
     private final IWorldMap map = new RectangularMap(4, 4);
@@ -207,7 +206,7 @@ public class AnimalMoveTest {
 
     @Test
     public void parseTest1() {
-        String[] arguments = {"f", "forward", "r", "sth", "right", "b", "backward", "l", "left", "sth"};
+        String[] arguments = {"f", "forward", "r", "right", "b", "backward", "l", "left"};
         MoveDirection[] directions = {
                 MoveDirection.FORWARD,
                 MoveDirection.FORWARD,
@@ -220,5 +219,11 @@ public class AnimalMoveTest {
         };
 
         assertArrayEquals(OptionsParser.parse(arguments), directions);
+    }
+
+    @Test
+    public void parseTest2() {
+        String[] arguments = {"f", "forwrd", "r", "right", "b", "backward", "l", "left"};
+        assertThrows(IllegalArgumentException.class, () -> OptionsParser.parse(arguments));
     }
 }
