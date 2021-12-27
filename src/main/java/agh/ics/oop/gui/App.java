@@ -35,6 +35,7 @@ public class App extends Application implements IGenericObserver {
     private XYChart.Series averageChildrenAmount, averageChildrenAmount2;
     private Text dominantGenotype, dominantGenotype2;
     private CSVWriter writer;
+    private int speed = 300;
     private int width = 4;
     private int height = 4;
     private int animalAmount = 2;
@@ -89,8 +90,8 @@ public class App extends Application implements IGenericObserver {
             return false;
         }
 
-        this.engine = new SimulationEngine(map, isMagical, firstAnimals, firstGrasses, startEnergy, moveEnergy, plantEnergy);
-        this.engine2 = new SimulationEngine(map2, isMagical2, firstAnimals, firstGrasses, startEnergy, moveEnergy, plantEnergy);
+        this.engine = new SimulationEngine(map, speed, isMagical, firstAnimals, firstGrasses, startEnergy, moveEnergy, plantEnergy);
+        this.engine2 = new SimulationEngine(map2, speed, isMagical2, firstAnimals, firstGrasses, startEnergy, moveEnergy, plantEnergy);
         this.engine.addObserver(this);
         this.engine2.addObserver(this);
         this.grid = new GridPane();
@@ -140,6 +141,7 @@ public class App extends Application implements IGenericObserver {
 
         LineChart energyChart = new LineChart(xAxis2, yAxis2);
         energyChart.setCreateSymbols(false);
+        energyChart.getXAxis().setStyle("-fx-color: black");
 
         this.animalsSize = new XYChart.Series();
         this.animalsSize2 = new XYChart.Series();
@@ -294,10 +296,11 @@ public class App extends Application implements IGenericObserver {
 
         return scroll;
     }
-    private boolean validate(TextField width, TextField height, TextField animalAmount,
+    private boolean validate(TextField speed, TextField width, TextField height, TextField animalAmount,
                              TextField startEnergy, TextField moveEnergy, TextField plantEnergy,
                              TextField jungleRatio, CheckBox isMagical, CheckBox isMagical2) {
         try {
+            this.speed = Integer.parseInt(speed.getText());
             this.width = Integer.parseInt(width.getText());
             this.height = Integer.parseInt(height.getText());
             this.animalAmount = Integer.parseInt(animalAmount.getText());
@@ -307,6 +310,7 @@ public class App extends Application implements IGenericObserver {
             this.jungleRatio = Double.parseDouble(jungleRatio.getText());
             this.isMagical = isMagical.isSelected();
             this.isMagical2 = isMagical2.isSelected();
+
             return true;
         } catch (NumberFormatException e) {
             return false;
@@ -316,6 +320,10 @@ public class App extends Application implements IGenericObserver {
 
     @Override
     public void start(Stage primaryStage) {
+        Text speedText = new Text("\nSzybkość symulacji [ms] [1-...] (może zaciąc komputer):\n");
+        TextField speed = new TextField("" + this.speed);
+        speed.setAlignment(Pos.CENTER);
+
         Text widthText = new Text("\nSzerokość mapy [1-...]:\n");
         TextField width = new TextField("" + this.width);
         width.setAlignment(Pos.CENTER);
@@ -355,7 +363,7 @@ public class App extends Application implements IGenericObserver {
         incorrectData.setVisible(false);
 
         startButton.setOnAction(ev -> {
-            if (this.validate(width, height, animalAmount, startEnergy,
+            if (this.validate(speed, width, height, animalAmount, startEnergy,
                     moveEnergy, plantEnergy, jungleRatio, isMagical, isMagical2) && this.initialize()) {
                 incorrectData.setVisible(false);
 
@@ -375,12 +383,12 @@ public class App extends Application implements IGenericObserver {
             }
 
         });
-        VBox appBox = new VBox(widthText, width, heightText, height, animalAmountText, animalAmount,
+        VBox appBox = new VBox(speedText, speed, widthText, width, heightText, height, animalAmountText, animalAmount,
                 startEnergyText, startEnergy, moveEnergyText, moveEnergy, plantEnergyText, plantEnergy,
                 jungleRatioText, jungleRatio);
         appBox.setAlignment(Pos.TOP_CENTER);
         VBox appBoxs = new VBox(appBox, new Text(""), isMagical, new Text(""), isMagical2, new Text(""), startButton, incorrectData);
-        Scene primaryScene = new Scene(appBoxs, 400, 650);
+        Scene primaryScene = new Scene(appBoxs, 400, 680);
         primaryStage.setScene(primaryScene);
         primaryStage.show();
     }

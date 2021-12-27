@@ -28,7 +28,7 @@ public class GuiElementBox {
 
     public VBox mapElementView() {
         Label elementLabel = new Label(labelText);
-        elementLabel.setStyle("-fx-font: 8 arial;");
+        elementLabel.setStyle("-fx-font: 6 arial;");
         ImageView elementView = new ImageView(img);
         VBox elementVBox = new VBox();
 

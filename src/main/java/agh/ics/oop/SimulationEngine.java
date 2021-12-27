@@ -1,15 +1,13 @@
 package agh.ics.oop;
 
 import javax.net.ssl.HandshakeCompletedEvent;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.TreeSet;
+import java.util.*;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class SimulationEngine implements IEngine, Runnable {
     private final IWorldMap map;
+    private final int speed;
     private final ArrayList<Animal> animals;
     private final ArrayList<Grass> grasses;
     private final ArrayList<IGenericObserver> observers = new ArrayList<>();
@@ -26,10 +24,11 @@ public class SimulationEngine implements IEngine, Runnable {
     private boolean ifMagicHappened = false;
 
 
-    public SimulationEngine(IWorldMap map, boolean isMagical, ArrayList<Vector2d> firstAnimals,
+    public SimulationEngine(IWorldMap map, int speed, boolean isMagical, ArrayList<Vector2d> firstAnimals,
                             ArrayList<Vector2d> firstGrasses,
                             int startEnergy, int moveEnergy, int plantEnergy) {
         this.map = map;
+        this.speed = speed;
         this.isMagical = isMagical;
         this.animals = new ArrayList<>();
         this.grasses = new ArrayList<>();
@@ -169,30 +168,30 @@ public class SimulationEngine implements IEngine, Runnable {
                     this.grasses.addAll(this.map.addDailyGrasses());
                     updateObservers();
                     this.days++;
+
+                    if (this.isMagical && this.magicalAlert < 3 && this.animals.size() == 5) {
+                        for (Animal animal:this.animals) {
+                            Vector2d emptyPosition = this.map.getEmptyPosition(false);
+                            if (emptyPosition == null) emptyPosition = this.map.getEmptyPosition(true);
+                            if (emptyPosition != null) {
+                                Animal newAnimal = new Animal(this.map, this.startEnergy, emptyPosition, animal.getGenotype());
+                                this.map.place(newAnimal);
+                                this.animals.add(newAnimal);
+                            }
+                            else break;
+                        }
+                        this.magicalAlert += 1;
+                        this.ifMagicHappened = true;
+                    }
                 }
-
-
                 if (this.animals.size() == 0 && this.grasses.size() == (this.map.getDrawBoundaries()[1].x+1)*(this.map.getDrawBoundaries()[1].y+1)) { return; }
 
-                if (this.isMagical && this.magicalAlert < 3 && this.animals.size() == 5) {
-                    for (Animal animal:this.animals) {
-                        Vector2d emptyPosition = this.map.getEmptyPosition(false);
-                        if (emptyPosition == null) emptyPosition = this.map.getEmptyPosition(true);
-                        if (emptyPosition != null) {
-                            Animal newAnimal = new Animal(this.map, this.startEnergy, emptyPosition, animal.getGenotype());
-                            this.map.place(newAnimal);
-                            this.animals.add(newAnimal);
-                        }
-                        else break;
-                    }
-                    this.magicalAlert += 1;
-                    this.ifMagicHappened = true;
-                }
 
 
-                Thread.sleep(200);
 
-            } catch (InterruptedException e) {
+                Thread.sleep(this.speed);
+
+            } catch (InterruptedException | ConcurrentModificationException e ) {
                 System.out.println("Interrupted: " + e.getMessage());
             }
         }
