@@ -143,42 +143,37 @@ public class RectangularMap extends AbstractWorldMap {
     public Vector2d getEmptyPosition(boolean inJungle) {
         int size = animalMap.size() + grassMap.size();
         if (size < (upperRightBound.x+1) * (upperRightBound.y+1)){
-            ArrayList<Vector2d> notEmptyPositions = new ArrayList<>();
-            while(true) {
-                if (inJungle) {
-                    Vector2d randomPosition = new Vector2d(
-                            (int) (Math.random() * (jungleUpperRightBound.x - jungleLowerLeftBound.x + 1) + jungleLowerLeftBound.x),
-                            (int) (Math.random() * (jungleUpperRightBound.y - jungleLowerLeftBound.y + 1) + jungleLowerLeftBound.y));
-                    if (!animalMap.containsKey(randomPosition) && !grassMap.containsKey(randomPosition)) {
-                        return randomPosition;
-                    }
-                    else {
-                        if (!notEmptyPositions.contains(randomPosition)) {
-                            notEmptyPositions.add(randomPosition);
-                        }
-                        if (notEmptyPositions.size() == (jungleUpperRightBound.x - jungleLowerLeftBound.x + 1) * (jungleUpperRightBound.y - jungleLowerLeftBound.y + 1)) return null;
-                    }
-                }
-                else {
-                    Vector2d randomPosition = new Vector2d(
-                            (int) (Math.random() * (upperRightBound.x + 1)),
-                            (int) (Math.random() * (upperRightBound.y + 1)));
-                    if (!(randomPosition.follows(jungleLowerLeftBound) && randomPosition.precedes(jungleUpperRightBound))) {
-                        if (!animalMap.containsKey(randomPosition) && !grassMap.containsKey(randomPosition)) {
-                            return randomPosition;
-                        }
-                        if (!notEmptyPositions.contains(randomPosition)) {
-                            notEmptyPositions.add(randomPosition);
-                        }
+            ArrayList<Vector2d> emptyPositions = new ArrayList<>();
+            Vector2d position;
 
+            if (inJungle) {
+                for (int x = jungleLowerLeftBound.x; x <= jungleUpperRightBound.x; x++) {
+                    for (int y = jungleLowerLeftBound.y; y <= jungleUpperRightBound.y; y++) {
+                        position = new Vector2d(x, y);
+                        if (!animalMap.containsKey(position) && !grassMap.containsKey(position)) {
+                            emptyPositions.add(position);
+                        }
                     }
-                    if (notEmptyPositions.size() == (upperRightBound.x+1) * (upperRightBound.y+1) - (jungleUpperRightBound.x - jungleLowerLeftBound.x + 1) * (jungleUpperRightBound.y - jungleLowerLeftBound.y + 1)) return null;
                 }
             }
+            else {
+                for (int x = lowerLeftBound.x; x <= upperRightBound.x; x++) {
+                    for (int y = lowerLeftBound.y; y <= upperRightBound.y; y++) {
+                        position = new Vector2d(x, y);
+                        if (!(position.follows(jungleLowerLeftBound) && position.precedes(jungleUpperRightBound))
+                                && !animalMap.containsKey(position) && !grassMap.containsKey(position)) {
+                            emptyPositions.add(position);
+                        }
 
+                    }
+                }
+            }
+            if (emptyPositions.isEmpty()) return null;
+            else return emptyPositions.get((int) (Math.random() * emptyPositions.size()));
         }
         else return null;
     }
+
     public ArrayList<Grass> addDailyGrasses() {
         ArrayList<Grass> addedGrasses = new ArrayList<>();
 

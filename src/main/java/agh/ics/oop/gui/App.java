@@ -42,8 +42,8 @@ public class App extends Application implements IGenericObserver {
     private int moveEnergy = 1;
     private int plantEnergy = 30;
     private double jungleRatio = 10;
-    private boolean isMagical = true;
-    private boolean isMagical2 = true;
+    private boolean isMagical = false;
+    private boolean isMagical2 = false;
 
 
     public static void main(String[] args) {
@@ -335,7 +335,9 @@ public class App extends Application implements IGenericObserver {
         jungleRatio.setAlignment(Pos.CENTER);
 
         CheckBox isMagical = new CheckBox("Strategia magiczna na mapie zawiniętej");
+        isMagical.setSelected(this.isMagical);
         CheckBox isMagical2 = new CheckBox("Strategia magiczna na mapie z murem");
+        isMagical2.setSelected(this.isMagical);
         Button startButton = new Button("OK");
 
         Text incorrectData = new Text("Wprowadzone dane są nieprawidłowe.");
@@ -375,10 +377,10 @@ public class App extends Application implements IGenericObserver {
 
     public void draw() {
         this.grid.getChildren().clear();
-        drawBase(grid, this.map, 25);
+        drawBase(grid, this.map, 27);
         drawFill(grid, this.map);
         this.grid2.getChildren().clear();
-        drawBase(grid2, this.map2, 25);
+        drawBase(grid2, this.map2, 27);
         drawFill(grid2, this.map2);
         animalsSize.getData().add(new XYChart.Data( engine.getDaysAmount(), engine.getAnimalSize()));
         animalsSize2.getData().add(new XYChart.Data( engine2.getDaysAmount(), engine2.getAnimalSize()));

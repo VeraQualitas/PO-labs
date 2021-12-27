@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 
 public class Grass implements IMapElement{
     private final Vector2d position;
+    private static Image grassImage;
 
     public Grass(Vector2d position) {
         this.position = position;
@@ -20,6 +21,7 @@ public class Grass implements IMapElement{
     }
     @Override
     public Image getImage() throws FileNotFoundException {
-        return new Image(new FileInputStream("src/main/resources/grass.png"));
+        if (grassImage == null) grassImage = new Image(new FileInputStream("src/main/resources/grass.png"));
+        return grassImage;
     }
 }

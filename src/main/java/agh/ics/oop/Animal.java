@@ -19,6 +19,15 @@ public class Animal implements IMapElement{
     private Vector2d position;
     private MapDirection direction = MapDirection.NORTH;
 
+    private static Image up;
+    private static Image upRight;
+    private static Image right;
+    private static Image downRight;
+    private static Image down;
+    private static Image downLeft;
+    private static Image left;
+    private static Image upLeft;
+
     public Animal(IWorldMap map, int energy, Vector2d initialPosition) {
         allAmount += 1;
         this.which = allAmount;
@@ -124,16 +133,26 @@ public class Animal implements IMapElement{
     public Integer getChildrenAmount() { return this.childrenAmount; }
     @Override
     public Image getImage() throws FileNotFoundException {
-        return new Image(new FileInputStream("src/main/resources/" +
-                switch (this.direction) {
-                    case NORTH -> "up.png";
-                    case NORTH_EAST -> "up-right.png";
-                    case EAST -> "right.png";
-                    case SOUTH_EAST -> "down-right.png";
-                    case SOUTH -> "down.png";
-                    case SOUTH_WEST -> "down-left.png";
-                    case WEST -> "left.png";
-                    case NORTH_WEST -> "up-left.png";
-                }));
+        if (up == null) {
+            up = new Image(new FileInputStream("src/main/resources/up.png"));
+            upRight = new Image(new FileInputStream("src/main/resources/up-right.png"));
+            right = new Image(new FileInputStream("src/main/resources/right.png"));
+            downRight = new Image(new FileInputStream("src/main/resources/down-right.png"));
+            down = new Image(new FileInputStream("src/main/resources/down.png"));
+            downLeft = new Image(new FileInputStream("src/main/resources/down-left.png"));
+            left = new Image(new FileInputStream("src/main/resources/left.png"));
+            upLeft = new Image(new FileInputStream("src/main/resources/up-left.png"));
+        }
+
+        return (switch (this.direction) {
+                    case NORTH -> up;
+                    case NORTH_EAST -> upRight;
+                    case EAST -> right;
+                    case SOUTH_EAST -> downRight;
+                    case SOUTH -> down;
+                    case SOUTH_WEST -> downLeft;
+                    case WEST -> left;
+                    case NORTH_WEST -> upLeft;
+                });
     }
 }
