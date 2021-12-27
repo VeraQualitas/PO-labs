@@ -88,7 +88,7 @@ public class SimulationEngine implements IEngine, Runnable {
         for (Animal animal:this.animals) {
             averageEnergy += animal.getEnergy();
         }
-        return averageEnergy * 1.0 / this.animals.size();
+        return this.animals.size() != 0 ? averageEnergy * 1.0 / this.animals.size() : 0;
     }
     public double getAverageAnimalLife() {
         Integer averageLife = 0;
@@ -102,7 +102,7 @@ public class SimulationEngine implements IEngine, Runnable {
         for (Animal animal:this.animals) {
             averageChildrenAmount += animal.getChildrenAmount();
         }
-        return averageChildrenAmount * 1.0 / this.animals.size();
+        return this.animals.size() != 0 ? averageChildrenAmount * 1.0 / this.animals.size() : 0;
     }
 
     private ArrayList<Vector2d> moveAndRemoveAnimals() {
@@ -190,7 +190,7 @@ public class SimulationEngine implements IEngine, Runnable {
                 }
 
 
-                Thread.sleep(500);
+                Thread.sleep(200);
 
             } catch (InterruptedException e) {
                 System.out.println("Interrupted: " + e.getMessage());

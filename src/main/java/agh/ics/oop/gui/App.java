@@ -54,30 +54,39 @@ public class App extends Application implements IGenericObserver {
     public void init() throws Exception {
     }
 
-    private void initialize() {
+    private boolean initialize() {
         map = new RectangularMap(width, height, jungleRatio, true);
         map2 = new RectangularMap(width, height, jungleRatio, false);
-
         ArrayList<Vector2d> firstAnimals = new ArrayList<>();
-        for (int animal = 0; animal < animalAmount; animal++) {
-            while (true) {
-                Vector2d randomPosition = new Vector2d((int) (Math.random() * width), (int) (Math.random() * height));
-                if (!firstAnimals.contains(randomPosition)) {
-                    firstAnimals.add(randomPosition);
-                    break;
+        ArrayList<Vector2d> firstGrasses = new ArrayList<>();
+        ArrayList<Vector2d> emptyPositions = new ArrayList<>();
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                emptyPositions.add(new Vector2d(x, y));
+            }
+        }
+        try {
+            if (emptyPositions.size() < animalAmount + 2) throw new IllegalArgumentException("Liczba pól jest za mała, aby pomieścić " + animalAmount + " zwięrząt i dwie trawy");
+            else {
+                Vector2d emptyPosition;
+                // = emptyPositions.get((int) (Math.random() * emptyPositions.size()))
+                emptyPosition = this.map.getEmptyPosition(true);
+                firstGrasses.add(emptyPosition);
+                emptyPositions.remove(emptyPosition);
+
+                emptyPosition = this.map.getEmptyPosition(false);
+                firstGrasses.add(emptyPosition);
+                emptyPositions.remove(emptyPosition);
+
+                for (int animal = 0; animal < animalAmount; animal++) {
+                    emptyPosition = emptyPositions.get((int) (Math.random() * emptyPositions.size()));
+                    emptyPositions.remove(emptyPosition);
+                    firstAnimals.add(emptyPosition);
                 }
             }
         }
-
-        ArrayList<Vector2d> firstGrasses = new ArrayList<>();
-        for (int grass = 0; grass < 1; grass++) {
-            while (true) {
-                Vector2d randomPosition = new Vector2d((int) (Math.random() * width), (int) (Math.random() * height));
-                if (!firstAnimals.contains(randomPosition) && !firstGrasses.contains(randomPosition)) {
-                    firstGrasses.add(randomPosition);
-                    break;
-                }
-            }
+        catch (IllegalArgumentException e) {
+            return false;
         }
 
         this.engine = new SimulationEngine(map, isMagical, firstAnimals, firstGrasses, startEnergy, moveEnergy, plantEnergy);
@@ -86,6 +95,7 @@ public class App extends Application implements IGenericObserver {
         this.engine2.addObserver(this);
         this.grid = new GridPane();
         this.grid2 = new GridPane();
+        return true;
     }
 
     public ScrollPane simulationGui() {
@@ -346,9 +356,9 @@ public class App extends Application implements IGenericObserver {
 
         startButton.setOnAction(ev -> {
             if (this.validate(width, height, animalAmount, startEnergy,
-                    moveEnergy, plantEnergy, jungleRatio, isMagical, isMagical2)) {
+                    moveEnergy, plantEnergy, jungleRatio, isMagical, isMagical2) && this.initialize()) {
                 incorrectData.setVisible(false);
-                this.initialize();
+
                 Scene scene = new Scene(simulationGui(), 600, 600);
                 primaryStage.setScene(scene);
                 primaryStage.show();
