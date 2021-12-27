@@ -141,7 +141,6 @@ public class App extends Application implements IGenericObserver {
 
         LineChart energyChart = new LineChart(xAxis2, yAxis2);
         energyChart.setCreateSymbols(false);
-        energyChart.getXAxis().setStyle("-fx-color: black");
 
         this.animalsSize = new XYChart.Series();
         this.animalsSize2 = new XYChart.Series();
@@ -356,7 +355,7 @@ public class App extends Application implements IGenericObserver {
         isMagical.setSelected(this.isMagical);
         CheckBox isMagical2 = new CheckBox("Strategia magiczna na mapie z murem");
         isMagical2.setSelected(this.isMagical);
-        Button startButton = new Button("OK");
+        Button startButton = new Button("Rozpocznij symulacje");
 
         Text incorrectData = new Text("Wprowadzone dane są nieprawidłowe.");
         incorrectData.setFill(Color.RED);
