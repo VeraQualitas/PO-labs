@@ -2,43 +2,51 @@ package agh.ics.oop;
 
 public enum MapDirection {
     NORTH,
-    SOUTH,
+    NORTH_EAST,
     EAST,
-    WEST;
+    SOUTH_EAST,
+    SOUTH,
+    SOUTH_WEST,
+    WEST,
+    NORTH_WEST;
+
 
     public String toString(){
         return switch (this) {
             case NORTH -> "Północ";
+            case NORTH_EAST -> "Północny wschód";
             case EAST -> "Wschód";
+            case SOUTH_EAST -> "Południowy wschód";
             case SOUTH -> "Południe";
+            case SOUTH_WEST -> "Południowy zachód";
             case WEST -> "Zachód";
+            case NORTH_WEST -> "Północny zachód";
         };
     }
 
     public MapDirection next(){
         return switch (this) {
-            case NORTH -> EAST;
-            case EAST -> SOUTH;
-            case SOUTH -> WEST;
-            case WEST -> NORTH;
-        };
-    }
-
-    public MapDirection previous(){
-        return switch (this) {
-            case NORTH -> WEST;
-            case WEST-> SOUTH;
-            case SOUTH -> EAST;
-            case EAST -> NORTH;
+            case NORTH -> NORTH_EAST;
+            case NORTH_EAST -> EAST;
+            case EAST -> SOUTH_EAST;
+            case SOUTH_EAST -> SOUTH;
+            case SOUTH -> SOUTH_WEST;
+            case SOUTH_WEST -> WEST;
+            case WEST -> NORTH_WEST;
+            case NORTH_WEST -> NORTH;
         };
     }
 
     public Vector2d toUnitVector(){
         return switch (this) {
             case NORTH -> new Vector2d(0, 1);
+            case NORTH_EAST -> new Vector2d(1, 1);
             case EAST -> new Vector2d(1, 0);
+            case SOUTH_EAST -> new Vector2d(1, -1);
             case SOUTH -> new Vector2d(0, -1);
+            case SOUTH_WEST -> new Vector2d(-1, -1);
             case WEST -> new Vector2d(-1, 0);
+            case NORTH_WEST -> new Vector2d(-1, 1);
         };
     }
 }

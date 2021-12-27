@@ -18,7 +18,7 @@ public class GuiElementBox {
     public GuiElementBox(IMapElement element) {
         try {
             this.img = element.getImage();
-            this.labelText = element instanceof Animal ? "Z " + element.getPosition() : "Trawa";
+            this.labelText = element instanceof Animal ? ((Animal) element).getWhich() + " " + ((Animal) element).getEnergy() : "Trawa";
         } catch (FileNotFoundException e) {
             System.out.println("File not found");
             this.img = null;
@@ -28,6 +28,7 @@ public class GuiElementBox {
 
     public VBox mapElementView() {
         Label elementLabel = new Label(labelText);
+        elementLabel.setStyle("-fx-font: 10 arial;");
         ImageView elementView = new ImageView(img);
         VBox elementVBox = new VBox();
 

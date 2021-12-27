@@ -1,50 +1,59 @@
 package agh.ics.oop;
-import java.util.HashMap;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 
 public abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObserver {
-    protected final HashMap<Vector2d, IMapElement> animalMap;
-    private final MapVisualizer mapVisualizer;
+    protected final ConcurrentHashMap<Vector2d, TreeSet<Animal>> animalMap;
+    protected final EnergyComparator energyComparator;
+    protected final ConcurrentHashMap<Vector2d, Grass> grassMap;
 
     public AbstractWorldMap() {
-        this.animalMap = new HashMap<>();
-        this.mapVisualizer = new MapVisualizer(this);
+        this.animalMap = new ConcurrentHashMap<>();
+        this.grassMap = new ConcurrentHashMap<>();
+        this.energyComparator = new EnergyComparator();
     }
 
-    public String toString() {
-        Vector2d[] boundaries = this.getDrawBoundaries();
-        return this.mapVisualizer.draw(boundaries[0], boundaries[1]);
-    }
+    //    public boolean isOccupied(Vector2d position) {
+    //        return (objectAt(position) != null);
+    //    }
 
+    //    public IMapElement objectAt(Vector2d position) {
+    //        return this.animalMap.get(position);
+    //    }
 
-    public boolean place(Animal animal) throws IllegalArgumentException {
-        Vector2d position = animal.getPosition();
-        if (canMoveTo(position)) {
-            this.animalMap.put(position, animal);
-            animal.addObserver(this);
-            return true;
+    abstract public Vector2d[] getDrawBoundaries();
+
+    public void positionChanged(Animal animal, Vector2d oldPosition, Vector2d newPosition) {
+        if (this.animalMap.containsKey(newPosition)) {
+            this.animalMap.get(newPosition).add(animal);
         }
-        else throw new IllegalArgumentException("Cannot place animal at " + position);
+        else {
+            TreeSet<Animal> treeSetAnimal = new TreeSet<>(energyComparator);
+            treeSetAnimal.add(animal);
+            this.animalMap.put(newPosition, treeSetAnimal);
+        }
+        if (this.animalMap.containsKey(oldPosition)) {
+            this.animalMap.get(oldPosition).remove(animal);
+
+            if (this.animalMap.get(oldPosition).isEmpty()) {
+                this.animalMap.remove(oldPosition);
+            }
+        }
+
     }
-
-    public boolean isOccupied(Vector2d position) {
-        return (objectAt(position) != null);
+    public boolean isAnimalAt(Vector2d position) {
+        return animalMap.containsKey(position);
     }
-
-
-    public Object objectAt(Vector2d position) {
-        return this.animalMap.get(position);
+    public boolean isGrassAt(Vector2d position) {
+        return grassMap.containsKey(position);
     }
-
-    abstract protected Vector2d[] getDrawBoundaries();
-
-    public boolean canMoveTo(Vector2d position) {
-        return !(objectAt(position) instanceof Animal);
+    public TreeSet<Animal> getAnimalAt(Vector2d position) {
+        return animalMap.get(position);
     }
-
-    public void positionChanged(Vector2d oldPosition, Vector2d newPosition) {
-        this.animalMap.put(newPosition, (Animal) objectAt(oldPosition));
-        this.animalMap.remove(oldPosition);
+    public Grass getGrassAt(Vector2d position) {
+        return grassMap.get(position);
     }
-
 }
