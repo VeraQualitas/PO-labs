@@ -37,8 +37,8 @@ public class GrassField extends AbstractWorldMap {
         if (objectAt(position) instanceof Grass) {
             Vector2d randomPosition = new Vector2d((int) (Math.random() * randomMax), (int) (Math.random() * randomMax));
             int counter = 0;
-            while (!placeGrass(randomPosition)) {
-                if (counter >= this.randomMax * this.randomMax + 10) {return false; }
+            while (!placeGrass(randomPosition)) {   // czy to nie powinno być wydzielone do osobnej metody?
+                if (counter >= this.randomMax * this.randomMax + 10) {return false; }   // co oznacza wartość false? nie może być tak, że nie da się dodać zwierzęcia do mapy, bo nie znaleźliśmy miejsca dla trawy
                 randomPosition = new Vector2d((int) (Math.random() * randomMax), (int) (Math.random() * randomMax));
                 counter++;
             };
@@ -46,7 +46,7 @@ public class GrassField extends AbstractWorldMap {
             throw new IllegalArgumentException("Cannot place animal at " + position);
         }
         mapBoundary.place(animal);
-        animal.addObserver(mapBoundary);
+        animal.addObserver(mapBoundary);    // właściwie to powinno być w MapBoundary
         animalMap.put(position, animal);
         animal.addObserver(this);
         return true;

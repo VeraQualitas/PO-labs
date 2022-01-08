@@ -17,7 +17,7 @@ public abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObse
     }
 
 
-    public boolean place(Animal animal) throws IllegalArgumentException {
+    public boolean place(Animal animal) throws IllegalArgumentException {   // ta deklaracja nie jest potrzebna - IllegalArgumentException jest unchecked
         Vector2d position = animal.getPosition();
         if (canMoveTo(position)) {
             this.animalMap.put(position, animal);

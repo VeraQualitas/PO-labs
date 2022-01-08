@@ -3,7 +3,7 @@ package agh.ics.oop;
 import java.util.*;
 
 public class MapBoundary implements IPositionChangeObserver{
-    protected final TreeSet<IMapElement> elementsX, elementsY;
+    protected final TreeSet<IMapElement> elementsX, elementsY;  // czemu nie private?
     protected final ElementComparator comparatorX, comparatorY;
 
     public MapBoundary(){
@@ -19,7 +19,7 @@ public class MapBoundary implements IPositionChangeObserver{
     }
 
     public void positionChanged(Vector2d oldPosition, Vector2d newPosition) {
-        IMapElement oldElement = new Grass(oldPosition);
+        IMapElement oldElement = new Grass(oldPosition);    // czemu jak zwierzę zmienia pozycję, to gdzieś się pojawiają dwie trawy?
         IMapElement newElement = new Grass(newPosition);
         this.elementsX.remove(oldElement);
         this.elementsY.remove(oldElement);
