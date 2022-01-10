@@ -69,7 +69,7 @@ public class App extends Application implements IGenericObserver {
         drawFill(grid, map);
     }
 
-    public void drawBase(GridPane grid, GrassField map, int grid_size) {
+    public void drawBase(GridPane grid, GrassField map, int grid_size) {    // czy to powinno być publiczne?
         this.grid.getColumnConstraints().clear();
         this.grid.getRowConstraints().clear();
         grid.setGridLinesVisible(false);

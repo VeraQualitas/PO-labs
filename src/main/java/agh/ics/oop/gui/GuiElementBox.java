@@ -20,9 +20,9 @@ public class GuiElementBox {
             this.img = element.getImage();
             this.labelText = element instanceof Animal ? "Z " + element.getPosition() : "Trawa";
         } catch (FileNotFoundException e) {
-            System.out.println("File not found");
-            this.img = null;
-            this.labelText = "";
+            System.out.println("File not found");   // zamiana wyjątku na komunikat w konsoli, zwłaszcza w programie z GUI jest mało opłacalna
+            this.img = null;    // czy program na pewno może poprawnie działać bez tego obrazka?
+            this.labelText = "";    // czemu etykieta też jest pusta?
         }
     }
 

@@ -48,7 +48,7 @@ public class SimulationEngine implements IEngine, Runnable {
                 this.animals.get(this.counter % this.animals.size()).move(this.moves[i]);
                 updateObservers();
                 this.counter++;
-                Thread.sleep(300);
+                Thread.sleep(300);  // a gdzie moveDelay?
             }
 
         }  catch (InterruptedException e) {
