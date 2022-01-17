@@ -13,7 +13,7 @@ public class SimulationEngine implements IEngine, Runnable {
     private final ArrayList<IGenericObserver> observers = new ArrayList<>();
 
     private Integer counter = 0;
-    private boolean flag = true;
+    private boolean flag = true;    // nazwa nic nie mówi; w pewny sensie wszyskie booleany to flagi
     private final int moveEnergy;
     private final int plantEnergy;
     private final int startEnergy;
@@ -21,7 +21,7 @@ public class SimulationEngine implements IEngine, Runnable {
     private ArrayList<Integer> deadAnimalsDays = new ArrayList<>();
     private final boolean isMagical;
     private Integer magicalAlert = 0;
-    private boolean ifMagicHappened = false;
+    private boolean ifMagicHappened = false;    // hasMagicHappened
 
 
     public SimulationEngine(IWorldMap map, int speed, boolean isMagical, ArrayList<Vector2d> firstAnimals,
@@ -58,47 +58,59 @@ public class SimulationEngine implements IEngine, Runnable {
             observer.update();
         }
     }
+
     public void changeFlag() {
         this.flag = !this.flag;
     }
 
-    public ArrayList<Integer> getDominantGenotype() {
+    public ArrayList<Integer> getDominantGenotype() {   // czy to na pewno zadanie dla silnika?
         HashMap<ArrayList<Integer>, Integer> genotypesAmount = new HashMap<>();
-        for (Animal animal:this.animals) {
+        for (Animal animal : this.animals) {
             if (genotypesAmount.containsKey(animal.getGenotype())) {
                 genotypesAmount.put(animal.getGenotype(), genotypesAmount.get(animal.getGenotype()) + 1);
-            }
-            else {
+            } else {
                 genotypesAmount.put(animal.getGenotype(), 1);
             }
         }
         ArrayList<Integer> dominantGenotype = null;
         Integer genotypeAmount = 0;
-        for (ArrayList<Integer> genotype:genotypesAmount.keySet()) {
+        for (ArrayList<Integer> genotype : genotypesAmount.keySet()) {
             if (genotypesAmount.get(genotype) > genotypeAmount) dominantGenotype = genotype;
         }
         return dominantGenotype;
     }
-    public Integer getAnimalSize() { return animals.size(); }
-    public Integer getGrassesSize() { return grasses.size(); }
-    public Integer getDaysAmount() { return this.days; }
+
+    public Integer getAnimalSize() {
+        return animals.size();
+    }
+
+    public Integer getGrassesSize() {
+        return grasses.size();
+    }
+
+    public Integer getDaysAmount() {
+        return this.days;
+    }
+
     public double getAverageEnergy() {
         Integer averageEnergy = 0;
-        for (Animal animal:this.animals) {
+        for (Animal animal : this.animals) {
             averageEnergy += animal.getEnergy();
         }
         return this.animals.size() != 0 ? averageEnergy * 1.0 / this.animals.size() : 0;
     }
+
     public double getAverageAnimalLife() {
         Integer averageLife = 0;
-        for (Integer days:this.deadAnimalsDays) {
+        for (Integer days : this.deadAnimalsDays) {
             averageLife += days;
         }
         return this.deadAnimalsDays.size() != 0 ? averageLife * 1.0 / this.deadAnimalsDays.size() : 0;
     }
+
     public double getAverageChildrenAmount() {
         Integer averageChildrenAmount = 0;
-        for (Animal animal:this.animals) {
+        for (Animal animal : this.animals) {
             averageChildrenAmount += animal.getChildrenAmount();
         }
         return this.animals.size() != 0 ? averageChildrenAmount * 1.0 / this.animals.size() : 0;
@@ -113,8 +125,7 @@ public class SimulationEngine implements IEngine, Runnable {
                 this.deadAnimalsDays.add(tmpAnimal.getDays());
                 this.animals.remove(tmpAnimal);
                 this.map.removeAnimal(tmpAnimal);
-            }
-            else {
+            } else {
                 tmpAnimal.move();
                 tmpAnimal.addEnergy(-this.moveEnergy);
                 this.counter++;
@@ -126,9 +137,10 @@ public class SimulationEngine implements IEngine, Runnable {
         this.counter = 0;
         return grassPositionsToEat;
     }
+
     private void feedAnimals(ArrayList<Vector2d> grassPositionsToEat) {
         ArrayList<Animal> eatingAnimals = new ArrayList<>();
-        for (Vector2d position:grassPositionsToEat) {
+        for (Vector2d position : grassPositionsToEat) {
             this.grasses.remove(this.map.getGrassAt(position));
             Grass newGrass = this.map.removeGrass(this.map.getGrassAt(position));
             if (newGrass != null) this.grasses.add(newGrass);
@@ -138,15 +150,18 @@ public class SimulationEngine implements IEngine, Runnable {
             Iterator<Animal> animal = tree.iterator();
             while (animal.hasNext()) {
                 Animal tmp = animal.next();
-                if (tmp.getEnergy() == max) { eatingAnimals.add(tmp); }
+                if (tmp.getEnergy() == max) {
+                    eatingAnimals.add(tmp);
+                }
             }
-            for (Animal eatingAnimal:eatingAnimals) {
-                eatingAnimal.addEnergy((int) (plantEnergy/(eatingAnimals.size())));
+            for (Animal eatingAnimal : eatingAnimals) {
+                eatingAnimal.addEnergy((int) (plantEnergy / (eatingAnimals.size())));
             }
             eatingAnimals.clear();
         }
         grassPositionsToEat.clear();
     }
+
     public boolean ifMagicHappened() {
         if (this.ifMagicHappened) {
             this.ifMagicHappened = false;
@@ -157,7 +172,7 @@ public class SimulationEngine implements IEngine, Runnable {
 
 
     public void run() {
-        while(true) {
+        while (true) {
             try {
                 if (flag) {
                     if (this.animals.size() > 0) {
@@ -170,28 +185,27 @@ public class SimulationEngine implements IEngine, Runnable {
                     this.days++;
 
                     if (this.isMagical && this.magicalAlert < 3 && this.animals.size() == 5) {
-                        for (Animal animal:this.animals) {
+                        for (Animal animal : this.animals) {
                             Vector2d emptyPosition = this.map.getEmptyPosition(false);
                             if (emptyPosition == null) emptyPosition = this.map.getEmptyPosition(true);
                             if (emptyPosition != null) {
                                 Animal newAnimal = new Animal(this.map, this.startEnergy, emptyPosition, animal.getGenotype());
                                 this.map.place(newAnimal);
                                 this.animals.add(newAnimal);
-                            }
-                            else break;
+                            } else break;
                         }
                         this.magicalAlert += 1;
                         this.ifMagicHappened = true;
                     }
                 }
-                if (this.animals.size() == 0 && this.grasses.size() == (this.map.getDrawBoundaries()[1].x+1)*(this.map.getDrawBoundaries()[1].y+1)) { return; }
-
-
+                if (this.animals.size() == 0 && this.grasses.size() == (this.map.getDrawBoundaries()[1].x + 1) * (this.map.getDrawBoundaries()[1].y + 1)) { // zakłada Pan, że mapa jest od (0, 0); nie lepiej dać mapie metody getWidth i getHeight?
+                    return;
+                }
 
 
                 Thread.sleep(this.speed);
 
-            } catch (InterruptedException | ConcurrentModificationException e ) {
+            } catch (InterruptedException | ConcurrentModificationException e) {    // czy ten drugi wyjątek na pewno możemy ignorować?
                 System.out.println("Interrupted: " + e.getMessage());
             }
         }

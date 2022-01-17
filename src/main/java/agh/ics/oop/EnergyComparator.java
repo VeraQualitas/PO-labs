@@ -10,7 +10,7 @@ public record EnergyComparator() implements Comparator<Animal> {
         int e2 = animal2.getEnergy();
         if (e2 - e1 != 0) { return e2 - e1; }
         else {
-            return animal2.getWhich() - animal1.getWhich();
-        }
+            return animal2.getWhich() - animal1.getWhich(); // co robi getWhich?
+        }   // czy rozstrzyganie remisów jest tutaj zasadne?
     }
 }

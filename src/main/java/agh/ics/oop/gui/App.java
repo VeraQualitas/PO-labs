@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.TreeSet;
 
 
-public class App extends Application implements IGenericObserver {
+public class App extends Application implements IGenericObserver {  // ta klasa jest przerośnięta
     private RectangularMap map;
     private RectangularMap map2;
     private GridPane grid;
